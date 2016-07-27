@@ -3,18 +3,16 @@ package us.timberdnd.prisonheroes.manager;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
-
 public class PlayerManagement {
 
-    public static HashMap<UUID, Player> players = new HashMap<UUID, Player>();
+    public static HashMap<UUID, PlayerEntity> players = new HashMap<UUID, PlayerEntity>();
 
     /**
      * <b>Description:</b>
      * 		Grab "players" collection database.
      *  @return HashMap<UUID, Player>
      */
-    public static HashMap<UUID, Player> getPlayers() {
+    public static HashMap<UUID, PlayerEntity> getPlayers() {
 	return players;
     }
 
@@ -24,7 +22,7 @@ public class PlayerManagement {
      * @param
      * @return Player
      */
-    public static Player getPlayer(UUID uuid) {
+    public static PlayerEntity getPlayer(UUID uuid) {
 	return players.get(uuid);
     }
     
@@ -33,9 +31,9 @@ public class PlayerManagement {
      * 		Add a player to "players" collection database.
      * @param
      */
-    public static void putPlayer(Player player) {
-	if(!(players.containsKey(player.getUniqueId()))) {
-	    players.put(player.getUniqueId(), player);
+    public static void putPlayer(PlayerEntity player) {
+	if(!(players.containsKey(player.getPlayer().getUniqueId()))) {
+	    players.put(player.getPlayer().getUniqueId(), player);
 	}
     }
     
@@ -44,9 +42,9 @@ public class PlayerManagement {
      * 		Remove a player from "players" collection database.
      * @param
      */
-    public static void removePlayer(Player player) {
-	if(players.containsKey(player.getUniqueId())) {
-	    players.remove(player.getUniqueId());
+    public static void removePlayer(PlayerEntity player) {
+	if(players.containsKey(player.getPlayer().getUniqueId())) {
+	    players.remove(player.getPlayer().getUniqueId());
 	}
     }
 }

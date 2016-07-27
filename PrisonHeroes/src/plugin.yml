@@ -1,0 +1,7 @@
+name: MineHavocPrison
+main: us.timberdnd.prisonheroes.PrisonHeroes
+author: [TimberDND]
+version: 1.0
+commands:
+   coins:
+     description: Coins management command.

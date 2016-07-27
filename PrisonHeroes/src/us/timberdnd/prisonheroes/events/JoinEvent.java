@@ -4,12 +4,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import us.timberdnd.prisonheroes.manager.PlayerEntity;
 import us.timberdnd.prisonheroes.manager.PlayerManagement;
 
 public class JoinEvent implements Listener {
     
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-	PlayerManagement.putPlayer(event.getPlayer());
+	PlayerManagement.putPlayer(new PlayerEntity(event.getPlayer()));
     }
 }
