@@ -7,17 +7,21 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import code.husky.mysql.MySQL;
 import us.timberdnd.prisonheroes.PrisonHeroes;
 
 public class SQLManager {
 
-    static String host;
-    static String port;
-    static String database;
-    static String user;
-    static String password;
+    static Plugin plugin = PrisonHeroes.plugin;
+
+    static String host = plugin.getConfig().getString("sql.host_name");
+    static String port = plugin.getConfig().getString("sql.port");
+    static String database = plugin.getConfig().getString("sql.database_name");
+    static String user = plugin.getConfig().getString("sql.user_name");
+    static String password = plugin.getConfig().getString("sql.password");
+    static String tableName = plugin.getConfig().getString("sql.table_name");
 
     public SQLManager() {
     }
@@ -26,7 +30,7 @@ public class SQLManager {
 	SUCCESS, TRUE, FALSE, ERROR;
     }
 
-    public static MySQL MYSQL = new MySQL(PrisonHeroes.plugin, host, port, database, user, password);
+    public static MySQL MYSQL = new MySQL(plugin, host, port, database, user, password);
     public static Connection c = null;
 
     public void createTable() {
@@ -37,7 +41,7 @@ public class SQLManager {
 	}
 	try {
 	    PreparedStatement ps = (PreparedStatement) c.prepareStatement(
-		    "CREATE TABLE IF NOT EXISTS Server (UUID varchar(36) NOT NULL, name varchar(32) NOT NULL, coins int(6) NOT NULL)");
+		    "CREATE TABLE IF NOT EXISTS " + tableName + " (UUID varchar(36) NOT NULL, name varchar(32) NOT NULL, coins int(6) NOT NULL)");
 	    ps.executeUpdate();
 	} catch (SQLException e) {
 	    System.out.println("[ERROR] Could not check if table exists, stopping server.");
@@ -61,7 +65,7 @@ public class SQLManager {
     public RESULT updatePlayerName(UUID p, String newName) {
 	checkConnection();
 	try {
-	    PreparedStatement ps = (PreparedStatement) c.prepareStatement("UPDATE `Server` SET name=?, WHERE UUIDD = ?");
+	    PreparedStatement ps = (PreparedStatement) c.prepareStatement("UPDATE `" + tableName + "` SET name=?, WHERE UUIDD = ?");
 	    ps.setString(1,  newName);
 	    ps.setString(2, p.toString());
 	    ps.executeUpdate();
@@ -74,7 +78,7 @@ public class SQLManager {
 
     public String getName(UUID uuid) throws SQLException {
 	checkConnection();
-	PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT name FROM Server WHERE UUID = ?");
+	PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT name FROM " + tableName + " WHERE UUID = ?");
 	ps.setString(1, uuid.toString());
 	ResultSet rs = ps.executeQuery();
 	if (rs.next()) {
@@ -86,7 +90,7 @@ public class SQLManager {
 
     public UUID getUUID(String name) throws SQLException {
 	checkConnection();
-	PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT UUID FROM Server WHERE name = ?");
+	PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT UUID FROM " + tableName + " WHERE name = ?");
 	ps.setString(1, name);
 	ResultSet rs = ps.executeQuery();
 	if(rs.next()) {
@@ -99,7 +103,7 @@ public class SQLManager {
     public RESULT checkExists(UUID uuid) {
 	checkConnection();
 	try {
-	    PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT UUID FROM Server WHERE UUID = ?");
+	    PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT UUID FROM " + tableName + " WHERE UUID = ?");
 	    ps.setString(1, uuid.toString());
 	    ResultSet rs = ps.executeQuery();
 	    if(rs.next()) {
@@ -118,7 +122,7 @@ public class SQLManager {
 	if(checkExists(uuid) == RESULT.FALSE) {
 	    PreparedStatement ps;
 	    try {
-		ps = (PreparedStatement) c.prepareStatement("INSERT INTO `Server` VALUES(?,?,?)");
+		ps = (PreparedStatement) c.prepareStatement("INSERT INTO `" + tableName + "` VALUES(?,?,?)");
 		ps.setString(1, uuid.toString());
 		ps.setString(2, name);
 		ps.setInt(3, 0);
@@ -136,7 +140,7 @@ public class SQLManager {
 	checkConnection();
 	PreparedStatement ps;
 	try {
-	    ps = (PreparedStatement) c.prepareStatement("UPDATE `Server` SET ? = ? WHERE UUID = ?");
+	    ps = (PreparedStatement) c.prepareStatement("UPDATE `" + tableName + "` SET ? = ? WHERE UUID = ?");
 	    ps.setString(1, object);
 	    ps.setObject(2, object1);
 	    ps.setString(3, uuid.toString());
@@ -148,15 +152,17 @@ public class SQLManager {
 	}
     }
 
-    public static Object getStatement(UUID uuid, String object) throws SQLException {
+    public static Object getStatement(UUID uuid, String object) {
 	checkConnection();
-	PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT " + object + " FROM Server WHERE UUID = ?");
-	ps.setString(1, uuid.toString());
-	ResultSet rs = ps.executeQuery();
-	if(rs.next()) {
-	    return rs.getObject(object);
-	}else{
-	    return null;
+	try {
+	    PreparedStatement ps = (PreparedStatement) c.prepareStatement("SELECT " + object + " FROM " + tableName + " WHERE UUID = ?");
+	    ps.setString(1, uuid.toString());
+	    ResultSet rs = ps.executeQuery();
+	    if(rs.next()) {
+		return rs.getObject(object);
+	    }
+	} catch (SQLException ex) {
 	}
+	return null;
     }
 } 

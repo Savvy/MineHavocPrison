@@ -3,6 +3,8 @@ package us.timberdnd.prisonheroes.manager;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
 public class PlayerManagement {
 
     public static HashMap<UUID, PlayerEntity> players = new HashMap<UUID, PlayerEntity>();
@@ -31,9 +33,9 @@ public class PlayerManagement {
      * 		Add a player to "players" collection database.
      * @param
      */
-    public static void putPlayer(PlayerEntity player) {
+    public static void putPlayer(Player player) {
 	if(!(players.containsKey(player.getPlayer().getUniqueId()))) {
-	    players.put(player.getPlayer().getUniqueId(), player);
+	    players.put(player.getUniqueId(), new PlayerEntity(player));
 	}
     }
     
@@ -42,9 +44,10 @@ public class PlayerManagement {
      * 		Remove a player from "players" collection database.
      * @param
      */
-    public static void removePlayer(PlayerEntity player) {
-	if(players.containsKey(player.getPlayer().getUniqueId())) {
-	    players.remove(player.getPlayer().getUniqueId());
+    public static void removePlayer(Player player) {
+	if(players.containsKey(player.getUniqueId())) {
+	    players.get(player.getUniqueId()).unload();
+	    players.remove(player.getUniqueId());
 	}
     }
 }

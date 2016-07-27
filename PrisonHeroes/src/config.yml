@@ -1,0 +1,13 @@
+sql:
+  host_name: 'localhost'
+  port: 3306
+  database_name: 'Server'
+  user_name: 'root'
+  password: 'password'
+
+coins:
+  min_balance: -100
+  max_balance: 10000
+  default_balance: 0
+playerBalance: '&7You currently have &c{0}&7.'
+incorrectArguments: '&7Sorry incorrect arguments, please try "&c{0}&7".'
