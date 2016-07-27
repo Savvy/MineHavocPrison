@@ -37,7 +37,9 @@ public class SQLManager {
 	try {
 	    c = MYSQL.openConnection();
 	} catch (ClassNotFoundException | SQLException e1) {
+	    System.out.println("[ERROR] Could not open SQL connection.");
 	    e1.printStackTrace();
+	    Bukkit.getServer().shutdown();
 	}
 	try {
 	    PreparedStatement ps = (PreparedStatement) c.prepareStatement(
@@ -125,7 +127,7 @@ public class SQLManager {
 		ps = (PreparedStatement) c.prepareStatement("INSERT INTO `" + tableName + "` VALUES(?,?,?)");
 		ps.setString(1, uuid.toString());
 		ps.setString(2, name);
-		ps.setInt(3, 0);
+		ps.setInt(3, plugin.getConfig().getInt("coins.default_balance"));
 		ps.executeUpdate();
 		return RESULT.SUCCESS;
 	    } catch (SQLException e) {

@@ -9,5 +9,16 @@ coins:
   min_balance: -100
   max_balance: 10000
   default_balance: 0
+
 playerBalance: '&7You currently have &c{0}&7.'
 incorrectArguments: '&7Sorry incorrect arguments, please try "&c{0}&7".'
+playerNotOnline: '&c{0} &7is not online. Try again later.'
+modifiedBalance: '&c{0} {1} &7coins to balance. New Balance: &c{2}&7.'
+cannotModifyBalance: '&7Was unable to modify balance please correct issue and try again.'
+amountMustBeNumber: '&7Amount variable must be a number.'
+help:
+  - 'Coins help:'
+  - 'Add as many'
+  - 'lines'
+  - '&7in color'
+  - 'as you wish.'

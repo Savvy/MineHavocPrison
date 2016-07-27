@@ -1,5 +1,10 @@
 package us.timberdnd.prisonheroes.cmds;
 
+import java.util.List;
+
+import net.md_5.bungee.api.ChatColor;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,19 +26,71 @@ public class CoinsCommand implements CommandExecutor {
 	if(cmd.getName().equalsIgnoreCase("coins")) {
 	    if(args.length == 3) {
 		if(args[0].equalsIgnoreCase("give")) {
-		    if(pe.addCoins()) {
-			
+		    Player player = Bukkit.getPlayer(args[1]);
+		    if(player != null && player.isOnline()) {
+			PlayerEntity target = PlayerManagement.getPlayer(player.getUniqueId());
+			if(PrisonHeroes.isInt(args[2])) {
+			    int amount = Integer.parseInt(args[2]);
+			    if(target.addCoins(amount)) {
+				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "+")
+					.replace("{1}", String.valueOf(amount)
+						.replace("{2}", String.valueOf(target.getCoins()))));
+				player.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "+")
+					.replace("{1}", String.valueOf(amount)
+						.replace("{2}", String.valueOf(target.getCoins()))));
+			    }else{
+				sender.sendMessage(messageUtils.getMessage("cannotModifyBalance", "", ""));
+			    }
+			}else{
+			    sender.sendMessage(messageUtils.getMessage("amountMustBeNumber", "", ""));
+			}
 		    }else{
-			// TODO: Was not able to add coins.
+			sender.sendMessage(messageUtils.getMessage("playerNotOnline", "{0}", args[1]));
 		    }
 		}else if(args[0].equalsIgnoreCase("take")) {
-		    if(pe.removeCoins()) {
-			
+		    Player player = Bukkit.getPlayer(args[1]);
+		    if(player != null && player.isOnline()) {
+			PlayerEntity target = PlayerManagement.getPlayer(player.getUniqueId());
+			if(PrisonHeroes.isInt(args[2])) {
+			    int amount = Integer.parseInt(args[2]);
+			    if(target.removeCoins(amount)) {
+				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")
+					.replace("{1}", String.valueOf(amount)
+						.replace("{2}", String.valueOf(target.getCoins()))));
+				player.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")
+					.replace("{1}", String.valueOf(amount)
+						.replace("{2}", String.valueOf(target.getCoins()))));
+			    }else{
+				sender.sendMessage(messageUtils.getMessage("cannotModifyBalance", "", ""));
+			    }
+			}else{
+			    sender.sendMessage(messageUtils.getMessage("amountMustBeNumber", "", ""));
+			}
 		    }else{
-			// TODO: Was not able to remove coins.
+			sender.sendMessage(messageUtils.getMessage("playerNotOnline", "{0}", args[1]));
 		    }
 		}else if(args[0].equalsIgnoreCase("send")) {
-
+		    Player player = Bukkit.getPlayer(args[1]);
+		    if(player != null && player.isOnline()) {
+			PlayerEntity target = PlayerManagement.getPlayer(player.getUniqueId());
+			if(PrisonHeroes.isInt(args[2])) {
+			    int amount = Integer.parseInt(args[2]);
+			    if(target.addCoins(amount) && pe.removeCoins(amount)) {
+				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")
+					.replace("{1}", String.valueOf(amount)
+						.replace("{2}", String.valueOf(pe.getCoins()))));
+				player.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "+")
+					.replace("{1}", String.valueOf(amount)
+						.replace("{2}", String.valueOf(target.getCoins()))));
+			    }else{
+				sender.sendMessage(messageUtils.getMessage("cannotModifyBalance", "", ""));
+			    }
+			}else{
+			    sender.sendMessage(messageUtils.getMessage("amountMustBeNumber", "", ""));
+			}
+		    }else{
+			sender.sendMessage(messageUtils.getMessage("playerNotOnline", "{0}", args[1]));
+		    }
 		}else{
 		    sender.sendMessage(messageUtils.getMessage("incorrectArguments", "{0}", "/coins send [player] [amount]"));
 		}
@@ -43,10 +100,11 @@ public class CoinsCommand implements CommandExecutor {
 		}else{
 		    sender.sendMessage(messageUtils.getMessage("incorrectArguments", "{0}", "/coins balance"));
 		}
-	    }else if(args.length == 0) {
-		// TODO: Send help
 	    }else{
-		// TODO: Incorrect arguments.
+		List<String> messages = PrisonHeroes.plugin.getConfig().getStringList("help");
+		messages.stream().forEach(message -> {
+		    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+		});
 	    }
 	}
 	return false;
