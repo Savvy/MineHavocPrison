@@ -22,10 +22,20 @@ public class PlayerManagement {
      * <b>Description:</b>
      * 		Retrieve a player from "players" collection database.
      * @param
-     * @return Player
+     * @return PlayerEntity
      */
     public static PlayerEntity getPlayer(UUID uuid) {
 	return players.get(uuid);
+    }
+    
+    /**
+     * <b>Description:</b>
+     * 		Retrieve a player from "players" collection database.
+     * @param
+     * @return PlayerEntity
+     */
+    public static PlayerEntity getPlayer(Player player) {
+	return players.get(getPlayer(player.getUniqueId()));
     }
     
     /**

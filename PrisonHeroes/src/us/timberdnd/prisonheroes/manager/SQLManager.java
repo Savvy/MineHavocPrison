@@ -43,7 +43,7 @@ public class SQLManager {
 	}
 	try {
 	    PreparedStatement ps = (PreparedStatement) c.prepareStatement(
-		    "CREATE TABLE IF NOT EXISTS " + tableName + " (UUID varchar(36) NOT NULL, name varchar(32) NOT NULL, coins int(6) NOT NULL)");
+		    "CREATE TABLE IF NOT EXISTS " + tableName + " (UUID varchar(36) NOT NULL, name varchar(32) NOT NULL, coins int(6) NOT NULL, ability varchar(32) NOT NULL");
 	    ps.executeUpdate();
 	} catch (SQLException e) {
 	    System.out.println("[ERROR] Could not check if table exists, stopping server.");
@@ -124,10 +124,11 @@ public class SQLManager {
 	if(checkExists(uuid) == RESULT.FALSE) {
 	    PreparedStatement ps;
 	    try {
-		ps = (PreparedStatement) c.prepareStatement("INSERT INTO `" + tableName + "` VALUES(?,?,?)");
+		ps = (PreparedStatement) c.prepareStatement("INSERT INTO `" + tableName + "` VALUES(?,?,?,?)");
 		ps.setString(1, uuid.toString());
 		ps.setString(2, name);
 		ps.setInt(3, plugin.getConfig().getInt("coins.default_balance"));
+		ps.setString(4, "none");
 		ps.executeUpdate();
 		return RESULT.SUCCESS;
 	    } catch (SQLException e) {

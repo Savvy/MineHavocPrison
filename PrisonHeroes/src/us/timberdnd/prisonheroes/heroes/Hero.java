@@ -1,41 +1,29 @@
 package us.timberdnd.prisonheroes.heroes;
 
-public enum Hero {
-    
-    SUPERMAN(1, "Ground Slam", 3),
-    BATMAN(1, "Bat Swarm", 3),
-    WOLVERINE(1, "Fast Attack", 3),
-    HAWKEYE(1, "Bow Explosion", 3);
-    
-    private int heroLevel;
-    private String abilityName;
-    private  int cooldown;
-    Hero(int heroLevel, String abilityName, int cooldown) {
-	this.setHeroLevel(heroLevel);
-	this.setAbilityName(abilityName);
-	this.setCooldown(cooldown);
-    }
-    public int getCooldown() {
-	return cooldown;
-    }
-    
-    public void setCooldown(int cooldown) {
-	this.cooldown = cooldown;
-    }
-    
-    public String getAbilityName() {
-	return abilityName;
-    }
-    
-    public void setAbilityName(String abilityName) {
-	this.abilityName = abilityName;
-    }
-    
-    public int getHeroLevel() {
-	return heroLevel;
-    }
-    
-    public void setHeroLevel(int heroLevel) {
-	this.heroLevel = heroLevel;
+import java.io.File;
+
+import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
+
+import us.timberdnd.prisonheroes.PrisonHeroes;
+import us.timberdnd.prisonheroes.manager.InventoryManager;
+import us.timberdnd.prisonheroes.manager.ItemParser;
+import us.timberdnd.prisonheroes.manager.MessageUtils;
+import us.timberdnd.prisonheroes.manager.PlayerEntity;
+
+public class Hero {
+    public static Inventory getInv(PlayerEntity player) {
+	MessageUtils utils = new MessageUtils(PrisonHeroes.plugin.getConfig());
+	Plugin plugin = PrisonHeroes.plugin;
+	InventoryManager manager = new InventoryManager(utils.getMessage("heroInv.name", "", ""), 2);
+	manager.layout(new char[][] {
+	    "aaa12aaaa".toCharArray(),
+	    "aaa34aaaa".toCharArray()
+	});
+	manager.item('1', new ItemParser(new File(plugin.getDataFolder() + "/superman.yml")).parse(player));
+	manager.item('2', new ItemParser(new File(plugin.getDataFolder() + "/batman.yml")).parse(player));
+	manager.item('3', new ItemParser(new File(plugin.getDataFolder() + "/wolverine.yml")).parse(player));
+	manager.item('4', new ItemParser(new File(plugin.getDataFolder() + "/hawkeye.yml")).parse(player));
+	return manager.mask().getInventory();
     }
 }

@@ -14,6 +14,7 @@ import us.timberdnd.prisonheroes.PrisonHeroes;
 import us.timberdnd.prisonheroes.manager.MessageUtils;
 import us.timberdnd.prisonheroes.manager.PlayerEntity;
 import us.timberdnd.prisonheroes.manager.PlayerManagement;
+import us.timberdnd.prisonheroes.manager.SimpleUtils;
 
 public class CoinsCommand implements CommandExecutor {
 
@@ -29,7 +30,7 @@ public class CoinsCommand implements CommandExecutor {
 		    Player player = Bukkit.getPlayer(args[1]);
 		    if(player != null && player.isOnline()) {
 			PlayerEntity target = PlayerManagement.getPlayer(player.getUniqueId());
-			if(PrisonHeroes.isInt(args[2])) {
+			if(SimpleUtils.isInt(args[2])) {
 			    int amount = Integer.parseInt(args[2]);
 			    if(target.addCoins(amount)) {
 				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "+")
@@ -51,7 +52,7 @@ public class CoinsCommand implements CommandExecutor {
 		    Player player = Bukkit.getPlayer(args[1]);
 		    if(player != null && player.isOnline()) {
 			PlayerEntity target = PlayerManagement.getPlayer(player.getUniqueId());
-			if(PrisonHeroes.isInt(args[2])) {
+			if(SimpleUtils.isInt(args[2])) {
 			    int amount = Integer.parseInt(args[2]);
 			    if(target.removeCoins(amount)) {
 				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")
@@ -73,7 +74,7 @@ public class CoinsCommand implements CommandExecutor {
 		    Player player = Bukkit.getPlayer(args[1]);
 		    if(player != null && player.isOnline()) {
 			PlayerEntity target = PlayerManagement.getPlayer(player.getUniqueId());
-			if(PrisonHeroes.isInt(args[2])) {
+			if(SimpleUtils.isInt(args[2])) {
 			    int amount = Integer.parseInt(args[2]);
 			    if(target.addCoins(amount) && pe.removeCoins(amount)) {
 				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")

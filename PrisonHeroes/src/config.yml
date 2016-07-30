@@ -10,12 +10,23 @@ coins:
   max_balance: 10000
   default_balance: 0
 
+ability:
+   superman:
+       price: 300
+       original_cooldown: 30
+       cooldown_expression: {current_level} * {next_level} - 30 / {current_level}
+
+heroInv:
+  name: '&bHero Inventory'
+
 playerBalance: '&7You currently have &c{0}&7.'
 incorrectArguments: '&7Sorry incorrect arguments, please try "&c{0}&7".'
 playerNotOnline: '&c{0} &7is not online. Try again later.'
 modifiedBalance: '&c{0} {1} &7coins to balance. New Balance: &c{2}&7.'
 cannotModifyBalance: '&7Was unable to modify balance please correct issue and try again.'
 amountMustBeNumber: '&7Amount variable must be a number.'
+abilityActivated: '&7You have activated the &c{0} &7ability.'
+unableToActivateAbility: '&7You are not able to activate your ability.'
 help:
   - 'Coins help:'
   - 'Add as many'
