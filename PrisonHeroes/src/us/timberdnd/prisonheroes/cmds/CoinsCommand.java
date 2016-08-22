@@ -34,11 +34,13 @@ public class CoinsCommand implements CommandExecutor {
 			    int amount = Integer.parseInt(args[2]);
 			    if(target.addCoins(amount)) {
 				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "+")
-					.replace("{1}", String.valueOf(amount)
-						.replace("{2}", String.valueOf(target.getCoins()))));
+					.replace("{1}", String.valueOf(amount))
+						.replace("{2}", String.valueOf(target.getCoins())));
+				if(!(player.getName().equalsIgnoreCase(sender.getName()))) {
 				player.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "+")
-					.replace("{1}", String.valueOf(amount)
-						.replace("{2}", String.valueOf(target.getCoins()))));
+					.replace("{1}", String.valueOf(amount))
+						.replace("{2}", String.valueOf(target.getCoins())));
+				}
 			    }else{
 				sender.sendMessage(messageUtils.getMessage("cannotModifyBalance", "", ""));
 			    }
@@ -56,11 +58,13 @@ public class CoinsCommand implements CommandExecutor {
 			    int amount = Integer.parseInt(args[2]);
 			    if(target.removeCoins(amount)) {
 				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")
-					.replace("{1}", String.valueOf(amount)
-						.replace("{2}", String.valueOf(target.getCoins()))));
+					.replace("{1}", String.valueOf(amount))
+						.replace("{2}", String.valueOf(target.getCoins())));
+				if(!(player.getName().equalsIgnoreCase(sender.getName()))) {
 				player.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")
-					.replace("{1}", String.valueOf(amount)
-						.replace("{2}", String.valueOf(target.getCoins()))));
+					.replace("{1}", String.valueOf(amount))
+						.replace("{2}", String.valueOf(target.getCoins())));
+				}
 			    }else{
 				sender.sendMessage(messageUtils.getMessage("cannotModifyBalance", "", ""));
 			    }
@@ -78,11 +82,13 @@ public class CoinsCommand implements CommandExecutor {
 			    int amount = Integer.parseInt(args[2]);
 			    if(target.addCoins(amount) && pe.removeCoins(amount)) {
 				sender.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "-")
-					.replace("{1}", String.valueOf(amount)
-						.replace("{2}", String.valueOf(pe.getCoins()))));
+					.replace("{1}", String.valueOf(amount))
+						.replace("{2}", String.valueOf(pe.getCoins())));
+				if(!(player.getName().equalsIgnoreCase(sender.getName()))) {
 				player.sendMessage(messageUtils.getMessage("modifiedBalance", "{0}", "+")
-					.replace("{1}", String.valueOf(amount)
-						.replace("{2}", String.valueOf(target.getCoins()))));
+					.replace("{1}", String.valueOf(amount))
+						.replace("{2}", String.valueOf(target.getCoins())));
+				}
 			    }else{
 				sender.sendMessage(messageUtils.getMessage("cannotModifyBalance", "", ""));
 			    }

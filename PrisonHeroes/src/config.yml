@@ -4,17 +4,19 @@ sql:
   database_name: 'Server'
   user_name: 'root'
   password: 'password'
+  table_name: 'test'
 
 coins:
   min_balance: -100
   max_balance: 10000
   default_balance: 0
+  
+cells_price: 100
 
 ability:
    superman:
        price: 300
        original_cooldown: 30
-       cooldown_expression: {current_level} * {next_level} - 30 / {current_level}
 
 heroInv:
   name: '&bHero Inventory'
@@ -27,6 +29,8 @@ cannotModifyBalance: '&7Was unable to modify balance please correct issue and tr
 amountMustBeNumber: '&7Amount variable must be a number.'
 abilityActivated: '&7You have activated the &c{0} &7ability.'
 unableToActivateAbility: '&7You are not able to activate your ability.'
+regionPurchased: '&7Successfully purchased this cell.'
+failedRegionPurchase: '&7Could not purchase this cell. Reason: {0}'
 help:
   - 'Coins help:'
   - 'Add as many'

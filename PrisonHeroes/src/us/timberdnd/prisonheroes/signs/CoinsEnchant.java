@@ -15,23 +15,20 @@ public class CoinsEnchant extends PrisonSigns {
     @Override
     public void createSign(SignChangeEvent event) {
 	if(!(event.getPlayer().hasPermission("ph.signs.create.enchants"))) {
-	    event.setLine(0, ChatColor.DARK_RED + "[CoinsEnchant]");
+	    event.setLine(0, ChatColor.DARK_RED + "[cEnchant]");
 	    // TODO: No permission.
 	    breakBlock(event.getBlock());
 	    return;
 	}
-	for(Enchantment enchant: Enchantment.values()) {
-	    if(event.getLine(1).equalsIgnoreCase(enchant.getName())) {
-		if(SimpleUtils.isInt(event.getLine(2)) && SimpleUtils.isInt(event.getLine(3))) {
-		    event.setLine(0, ChatColor.DARK_BLUE + "[CoinsEnchant]");
-		    event.setLine(1, ChatColor.GREEN + enchant.getName());
-		    return;
-		}
+	if(Enchantment.getByName(event.getLine(1).toUpperCase()) != null) {
+	    if(SimpleUtils.isInt(event.getLine(2)) && SimpleUtils.isInt(event.getLine(3))) {
+		event.setLine(0, ChatColor.DARK_BLUE + "[cEnchant]");
+		event.setLine(1, ChatColor.GREEN + event.getLine(1).toUpperCase());
+		return;
 	    }
-	    event.setLine(0, ChatColor.DARK_RED + "[CoinsEnchant]");
-	    breakBlock(event.getBlock());
-	    return;
 	}
+	event.setLine(0, ChatColor.DARK_RED + "[cEnchant]");
+	breakBlock(event.getBlock());
     }
 
     @Override
@@ -44,7 +41,7 @@ public class CoinsEnchant extends PrisonSigns {
 
     @Override
     public String getSignName() {
-	return "CoinsEnchant";
+	return "cEnchant";
     }
 
     @Override
@@ -54,9 +51,13 @@ public class CoinsEnchant extends PrisonSigns {
 	    return;
 	}
 	ItemStack item = player.getItemInHand();
-	item.addEnchantment(Enchantment.getByName(ChatColor.stripColor(sign.getLine(1))),
-		Integer.valueOf(sign.getLine(2)));
-	// TODO: Enchantment added.
+	Enchantment enchantment = Enchantment.getByName(ChatColor.stripColor(sign.getLine(1)));
+	if(enchantment != null && enchantment.canEnchantItem(item)) {
+	    // TODO: Enchantment added.
+	    item.addEnchantment(null, Integer.valueOf(sign.getLine(2)));
+	}else{
+	    // TODO: Can not enchant item.
+	}
 	return;
     }
 }

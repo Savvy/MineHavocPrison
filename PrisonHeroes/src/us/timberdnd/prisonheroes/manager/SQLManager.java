@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import code.husky.mysql.MySQL;
@@ -14,41 +13,39 @@ import us.timberdnd.prisonheroes.PrisonHeroes;
 
 public class SQLManager {
 
-    static Plugin plugin = PrisonHeroes.plugin;
+    Plugin plugin = PrisonHeroes.getInstance();
 
-    static String host = plugin.getConfig().getString("sql.host_name");
-    static String port = plugin.getConfig().getString("sql.port");
-    static String database = plugin.getConfig().getString("sql.database_name");
-    static String user = plugin.getConfig().getString("sql.user_name");
-    static String password = plugin.getConfig().getString("sql.password");
-    static String tableName = plugin.getConfig().getString("sql.table_name");
-
-    public SQLManager() {
-    }
+    public SQLManager() {}
 
     public enum RESULT {
 	SUCCESS, TRUE, FALSE, ERROR;
     }
 
-    public static MySQL MYSQL = new MySQL(plugin, host, port, database, user, password);
-    public static Connection c = null;
+    static String tableName = "test";
 
+    public static MySQL MYSQL = new MySQL(PrisonHeroes.getInstance(), 
+	    PrisonHeroes.getInstance().getConfig().getString("sql.host_name"), 
+	    PrisonHeroes.getInstance().getConfig().getString("sql.port"), 
+	    PrisonHeroes.getInstance().getConfig().getString("sql.database_name"), 
+	    PrisonHeroes.getInstance().getConfig().getString("sql.user_name"), 
+	    PrisonHeroes.getInstance().getConfig().getString("sql.password"));
+    public static Connection c = null;
+    
     public void createTable() {
 	try {
 	    c = MYSQL.openConnection();
 	} catch (ClassNotFoundException | SQLException e1) {
 	    System.out.println("[ERROR] Could not open SQL connection.");
 	    e1.printStackTrace();
-	    Bukkit.getServer().shutdown();
 	}
 	try {
-	    PreparedStatement ps = (PreparedStatement) c.prepareStatement(
-		    "CREATE TABLE IF NOT EXISTS " + tableName + " (UUID varchar(36) NOT NULL, name varchar(32) NOT NULL, coins int(6) NOT NULL, ability varchar(32) NOT NULL");
+	    PreparedStatement ps = (PreparedStatement) 
+		    c.prepareStatement(
+		    "CREATE TABLE IF NOT EXISTS " + tableName + "(UUID varchar(36) NOT NULL, name varchar(32) NOT NULL, coins int(6) NOT NULL, ability varchar(32) NOT NULL)");
 	    ps.executeUpdate();
 	} catch (SQLException e) {
 	    System.out.println("[ERROR] Could not check if table exists, stopping server.");
 	    e.printStackTrace();
-	    Bukkit.getServer().shutdown();
 	}
     }
 

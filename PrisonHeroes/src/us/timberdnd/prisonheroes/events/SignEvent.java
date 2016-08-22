@@ -17,11 +17,11 @@ public class SignEvent implements Listener {
 
     @EventHandler
     public void createSign(SignChangeEvent event) {
-//	if(event.getPlayer().hasPermission("mca.colored")) {
-//	    for(int i = 0; i<event.getLines().length; i++) {
-//		event.setLine(i, translate(event.getLine(i)));
-//	    }
-//	}
+	//	if(event.getPlayer().hasPermission("mca.colored")) {
+	//	    for(int i = 0; i<event.getLines().length; i++) {
+	//		event.setLine(i, translate(event.getLine(i)));
+	//	    }
+	//	}
 	for(PrisonSigns signs: PrisonHeroes.getSigns().signs) {
 	    if(ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase
 		    ("[" + signs.getSignName() + "]")) {
@@ -68,7 +68,7 @@ public class SignEvent implements Listener {
 	    }
 	}
     }
-    
+
     public String translate(String string) {
 	return ChatColor.translateAlternateColorCodes('&', string);
     }

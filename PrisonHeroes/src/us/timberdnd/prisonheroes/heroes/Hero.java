@@ -20,10 +20,10 @@ public class Hero {
 	    "aaa12aaaa".toCharArray(),
 	    "aaa34aaaa".toCharArray()
 	});
-	manager.item('1', new ItemParser(new File(plugin.getDataFolder() + "/superman.yml")).parse(player));
-	manager.item('2', new ItemParser(new File(plugin.getDataFolder() + "/batman.yml")).parse(player));
-	manager.item('3', new ItemParser(new File(plugin.getDataFolder() + "/wolverine.yml")).parse(player));
-	manager.item('4', new ItemParser(new File(plugin.getDataFolder() + "/hawkeye.yml")).parse(player));
+	manager.item('1', new ItemParser(new File(plugin.getDataFolder() + "/abilities/superman.yml")).parse());
+	manager.item('2', new ItemParser(new File(plugin.getDataFolder() + "/abilities/batman.yml")).parse());
+	manager.item('3', new ItemParser(new File(plugin.getDataFolder() + "/abilities/wolverine.yml")).parse());
+	manager.item('4', new ItemParser(new File(plugin.getDataFolder() + "/abilities/hawkeye.yml")).parse());
 	return manager.mask().getInventory();
     }
 }

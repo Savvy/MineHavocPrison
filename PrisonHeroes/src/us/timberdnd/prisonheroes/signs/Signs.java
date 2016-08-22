@@ -9,7 +9,9 @@ public class Signs {
    
     public void registerSign() {
 	registerSigns(
-		new CoinsEnchant());
+		new CoinsEnchant(),
+		new Casino(),
+		new HeroSign());
     }
     
     public void registerSigns(PrisonSigns...signs) {

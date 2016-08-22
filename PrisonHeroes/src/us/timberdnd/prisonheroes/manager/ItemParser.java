@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemParser {
-    
+
     private File file;
     private FileConfiguration fc;
     private MessageUtils messageUtils;
@@ -20,12 +20,17 @@ public class ItemParser {
 	fc = YamlConfiguration.loadConfiguration(this.file);
 	messageUtils = new MessageUtils(fc);
     }
-    
-    public ItemStack parse(PlayerEntity player) {
+
+    public ItemStack parse() {
 	ItemStack item = new ItemStack(Material.valueOf(fc.getString("type").toUpperCase()));
-	item.setAmount(fc.getInt("amount"));
+	if(fc.isSet("amount")) {
+	    item.setAmount(fc.getInt("amount"));
+	}
 	ItemMeta meta = item.getItemMeta();
 	meta.setDisplayName(messageUtils.getMessage("name", "", ""));
+	if(fc.isSet("short")) {
+	    item.setDurability(Short.valueOf(fc.getString("short")));
+	}
 	ArrayList<String> lore = new ArrayList<String>();
 	fc.getStringList("lore").stream().forEach(string -> {
 	    lore.add(translate(string));
@@ -34,7 +39,7 @@ public class ItemParser {
 	item.setItemMeta(meta);
 	return item;
     }
-    
+
     private String translate(String string) {
 	return ChatColor.translateAlternateColorCodes('&', string);
     }

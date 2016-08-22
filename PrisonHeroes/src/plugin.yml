@@ -2,6 +2,11 @@ name: MineHavocPrison
 main: us.timberdnd.prisonheroes.PrisonHeroes
 author: [TimberDND]
 version: 1.0
+depend: [WorldGuard]
 commands:
+   buycell:
+     description: Purchase the cell you are currently in.
    coins:
      description: Coins management command.
+   hero:
+     description: Hero management command.

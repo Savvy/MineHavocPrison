@@ -29,7 +29,7 @@ public class PlayerEntity {
     }
 
     private void load() {
-	coins = (Integer) SQLManager.getStatement(player.getUniqueId(), "coins");
+	coins = (int) SQLManager.getStatement(player.getUniqueId(), "coins");
     }
 
     public void unload() {
@@ -41,7 +41,7 @@ public class PlayerEntity {
     }
 
     public boolean removeCoins(int amount) {
-	if(getCoins() - amount < fc.getInt("min_balance")) {
+	if(getCoins() - amount < fc.getInt("coins.min_balance")) {
 	    return false;   
 	}else{
 	    coins -= amount;
@@ -50,7 +50,7 @@ public class PlayerEntity {
     }
 
     public boolean addCoins(int amount) {
-	if(getCoins() + amount > fc.getInt("max_balance")) {
+	if(getCoins() + amount > fc.getInt("coins.max_balance")) {
 	    return false;
 	}else{
 	    coins += amount;
